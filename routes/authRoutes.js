@@ -9,7 +9,7 @@ router.post('/register', RegisterUser);
 
 router.get("/confirm/:confirmationCode", verifyAccount);
 
-router.patch("/resetpassword/:resettoken", resetPassword)
+router.put("/resetpassword/:resettoken", resetPassword)
 
 router.post("/forgotpassword",forgotPassword)
 

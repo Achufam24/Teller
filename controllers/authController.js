@@ -79,7 +79,7 @@ const verifyAccount = async(req,res) => {
 
 
 
-const forgotPassword = async(req,res) => {
+const forgotPassword = asynchandler( async(req,res) => {
     const user = await User.findOne({ email: req.body.email });
 
     if (!user) {
@@ -119,12 +119,12 @@ const forgotPassword = async(req,res) => {
 		res.status(500);
 		throw new Error('Email could not be sent');
     }
-}
+});
 
 const resetPassword = asynchandler(async(req,res) => {
     //get hashed token
     const resetPasswordToken = crypto.createHash('sha256')
-    .update(req.params.resettoken).digest('hex') = req.params;
+    .update(req.params.resettoken).digest('hex');
 
     
 
