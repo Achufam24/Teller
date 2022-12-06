@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
-const { sendEmail } = require('../utils/sendEmail')
+const { sendEmail } = require('../utils/sendEmail');
+
 
 
 const Schema = mongoose.Schema;
@@ -87,6 +88,10 @@ userSchema.statics.login = async function (email, password) {
 
     if (!match) {
         throw Error('Incorrect password')
+    }
+
+    if (this.isEmailVerified === false) {
+      throw Error('Account not verifief')
     }
 
     return user;

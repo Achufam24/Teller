@@ -12,7 +12,15 @@ const createToken = (_id) => {
 const  LoginUser = async(req,res) => {
     const {email, password} = req.body
     try {
-        const user = await User.login(email,password)
+        const user = await User.login(email,password);
+
+        //check if user is verified
+        if (user.isEmailVerified === false) {
+			res.status(401);
+			throw new Error(
+				'Your Account is not Verified. Please Verifiy Your Account'
+			);
+		}
 
         //create a token after login
         const token = createToken(user._id)
