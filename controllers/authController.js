@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const { sendEmail } = require('../utils/sendEmail');
 const crypto = require('crypto');
+const asynchandler = require('express-async-handler');
+
 
 
 //create jwt Token
@@ -119,10 +121,11 @@ const forgotPassword = async(req,res) => {
     }
 }
 
-const resetPassword = async(req,res) => {
+const resetPassword = asynchandler(async(req,res) => {
     //get hashed token
     const resetPasswordToken = crypto.createHash('sha256')
     .update(req.params.resettoken).digest('hex');
+
 
     const user = await User.findOne({
         resetPasswordToken,
@@ -144,7 +147,7 @@ const resetPassword = async(req,res) => {
     return res.status(200).json({
         msg: 'Password Reset Successfully.Login with your password'
     });
-}
+});
 
 
 
