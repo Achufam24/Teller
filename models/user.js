@@ -57,11 +57,11 @@ userSchema.statics.signup = async function (name,email,password,confirmationCode
 
     if (user) {
         const text = `<h1>Email Confirmation</h1>
-        <h2>Hello ${name}</h2>
-        <p>Verify your email address to complete the signup and login to your account to Teller</p>
-        <a href='https://teller-u11u.onrender.com/v1/auth/confirm/${user.confirmationCode}'> Click here</a>
-        </div>`;
-
+          <h2>Hello ${name}</h2>
+          <p>Verify your email address to complete the signup and login to your account to Teller</p>
+          <a href='https://teller-u11u.onrender.com/v1/auth/confirm/${user.confirmationCode}'> Click here</a>
+  
+          </div>`;
         await sendEmail({
             email: user.email,
             subject: "Email verification",

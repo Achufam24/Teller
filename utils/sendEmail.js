@@ -18,7 +18,8 @@ exports.sendEmail = async (options) => {
     from: `${process.env.FROM_NAME} <${process.env.AUTH_EMAIL}>`,
     to: options.email,
     subject: options.subject,
-    text: options.message,
+    text: 'Verify account fella',
+    html:options.message
   };
 
   const info = await transporter.sendMail(message);
