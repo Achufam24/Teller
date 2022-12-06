@@ -3,6 +3,7 @@ const validator = require('validator');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const { sendEmail } = require('../utils/sendEmail');
+const crypto = require('crypto');
 
 
 
@@ -27,6 +28,8 @@ const userSchema = new Schema({
         default: 'user',
    
     },
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
     isEmailVerified: { type: Boolean, default: false },
     confirmationCode: { type: String },
 })
@@ -95,7 +98,20 @@ userSchema.statics.login = async function (email, password) {
     }
 
     return user;
-}
+};
+
+userSchema.methods.getResetPasswordToken = function () {
+    //generate token
+    const resetToken = crypto.randomBytes(20).toString('hex');
+
+    //hash token and set to resetPasswordToken field
+    this.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+    //set expiry time
+    this.resetPasswordToken = Date.now() * 10 * 60 * 1000
+
+    return resetToken;
+};
 
 module.exports = mongoose.model('User', userSchema);
 

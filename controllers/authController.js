@@ -2,12 +2,31 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
+const { sendEmail } = require('../utils/sendEmail');
+const crypto = require('crypto');
 
 
 //create jwt Token
 const createToken = (_id) => {
     return jwt.sign({_id}, 'Achufam24', { expiresIn: process.env.EXPIRE })
 }
+
+
+const RegisterUser = async(req,res) => {
+    const {name,email,password} = req.body
+    try {
+        const user = await User.signup(name, email, password)
+
+
+        //create a token after registration
+        const token = createToken(user._id)
+
+        res.status(200).json({name,email, token})
+    } catch (error) {
+        res.status(400).json({error:error.message})
+    }
+};
+
 
 const  LoginUser = async(req,res) => {
     const {email, password} = req.body
@@ -26,22 +45,6 @@ const  LoginUser = async(req,res) => {
         const token = createToken(user._id)
 
         res.status(200).json({email, token})
-    } catch (error) {
-        res.status(400).json({error:error.message})
-    }
-};
-
-
-const RegisterUser = async(req,res) => {
-    const {name,email,password} = req.body
-    try {
-        const user = await User.signup(name, email, password)
-
-
-        //create a token after registration
-        const token = createToken(user._id)
-
-        res.status(200).json({name,email, token})
     } catch (error) {
         res.status(400).json({error:error.message})
     }
@@ -74,8 +77,81 @@ const verifyAccount = async(req,res) => {
 
 
 
+const forgotPassword = async(req,res) => {
+    const user = await User.findOne({ email: req.body.email });
+
+    if (!user) {
+        res.status(404);
+        throw new Error('There is no user with this email')
+    }
+
+    //Get reset Token
+    const resetToken = user.getResetPasswordToken();
+
+    await user.save({ validateBeforeSave: false });
+
+    // create message to pass
+	const text = `<h1>Password Reset Link</h1>
+    <h2>Hello ${user.name}</h2>
+    <p>You are receiving this email because you (or someone else) has
+     requested the reset of a password</p>
+       <a href='https://teller-u11u.onrender.com/v1/auth/resetpassword/${resetToken}'> Click here to reset your password</a>
+    </div>`;
+
+    try {
+        await sendEmail({
+            email: user.email,
+            subject: 'Password reset token',
+            message: text,
+        });
+        res.status(200).json({
+            sucess: true,
+            data: 'Email sent'
+        });
+    } catch (error) {
+        user.resetPasswordToken = undefined;
+		user.resetPasswordExpire = undefined;
+
+		await user.save({ validateBeforeSave: false });
+
+		res.status(500);
+		throw new Error('Email could not be sent');
+    }
+}
+
+const resetPassword = async(req,res) => {
+    //get hashed token
+    const resetPasswordToken = crypto.createHash('sha256')
+    .update(req.params.resettoken).digest('hex');
+
+    const user = await User.findOne({
+        resetPasswordToken,
+        resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+        res.status(400);
+		throw new Error('Invalid token');
+    }
+
+    //set new password
+    user.password = req.body.password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    return res.status(200).json({
+        msg: 'Password Reset Successfully.Login with your password'
+    });
+}
+
+
+
 module.exports = {
     LoginUser, 
     RegisterUser,
-    verifyAccount
+    verifyAccount,
+    forgotPassword,
+    resetPassword
 }
