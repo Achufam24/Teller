@@ -130,7 +130,7 @@ const resetPassword = asynchandler(async(req,res) => {
 
     const user = await User.findOne({
 		resetPasswordToken: resettoken,
-		resetPasswordExpire: { $gt: Date.now() },
+		// resetPasswordExpire: { $gt: Date.now() },
 	});
 
     if (!user) {
