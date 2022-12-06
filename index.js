@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
-const { connectDB } = require('./config/db');
+// const { connectDB } = require('./config/db');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const postRoutes = require('./routes/postRoutes');
@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 
-connectDB();
+// connectDB();
 
 app.get('/', (req,res) => {
     res.send('Welcome to Teller API service')
@@ -37,9 +37,16 @@ app.use('/v1/post', postRoutes);
 
 const PORT = process.env.PORT || 8000;
 
-
-app.listen(PORT, () => {
-    console.log(`Server running on`,PORT);
+mongoose.connect(process.env.MONGO_URI).then(() => {
+    //listens for requests
+    app.listen(PORT, () => {
+        console.log('connected to db and listening at port',PORT);
+    })
+}).catch((error) => {
+    console.log(error);
 })
+// app.listen(PORT, () => {
+//     console.log(`Server running on`,PORT);
+// })
 
 
