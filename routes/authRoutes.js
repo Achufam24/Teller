@@ -7,7 +7,7 @@ router.post('/login', LoginUser );
 
 router.post('/register', RegisterUser);
 
-router.post('/admin', );
+router.get("/confirm/:confirmCode")
 
 
 module.exports = router;

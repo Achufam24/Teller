@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { v4: uuidv4 } = require('uuid');
 
 
 //create jwt Token
@@ -37,6 +38,31 @@ const RegisterUser = async(req,res) => {
         res.status(400).json({error:error.message})
     }
 };
+
+//verify user email
+const verifyAccount = async(req,res) => {
+    try {
+        const { confirmationCode } = req.params;
+
+        //compare the confirmation code
+        const confirmUser = await User.findOne({confirmationCode});
+
+        if (!confirmUser) {
+           res.status(400);
+           throw new Error("User not found"); 
+        }else {
+            confirmUser.isEmailVerified = true;
+            await confirmUser.save();
+            res.status(200).json({
+                msg: "Verification Successful. You can login now",
+                status: confirmUser.isEmailVerified,
+              });
+        }
+    } catch (error) {
+        res.status(400);
+        throw new Error(error.message);
+    }
+}
 
 
 
