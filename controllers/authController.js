@@ -124,7 +124,9 @@ const forgotPassword = async(req,res) => {
 const resetPassword = asynchandler(async(req,res) => {
     //get hashed token
     const resetPasswordToken = crypto.createHash('sha256')
-    .update(req.params.resettoken).digest('hex');
+    .update(req.params.resettoken).digest('hex') = req.params;
+
+    
 
 
     const user = await User.findOne({
