@@ -123,32 +123,30 @@ const forgotPassword = asynchandler( async(req,res) => {
 
 const resetPassword = asynchandler(async(req,res) => {
     //get hashed token
-    const resetPasswordToken = crypto.createHash('sha256')
-    .update(req.params.resettoken).digest('hex');
+    const { resettoken } = req.params;
+    const { password } = req.body;
 
     
 
-
     const user = await User.findOne({
-        resetPasswordToken,
-        resetPasswordExpire: { $gt: Date.now() },
-    });
+		resetPasswordToken: resettoken,
+		resetPasswordExpire: { $gt: Date.now() },
+	});
 
     if (!user) {
         res.status(400);
-		throw new Error('Invalid token');
+        throw new Error('Invalid token')
     }
 
-    //set new password
-    user.password = req.body.password;
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpire = undefined;
+    //set password
+    user.password = password;
 
     await user.save();
 
     return res.status(200).json({
-        msg: 'Password Reset Successfully.Login with your password'
-    });
+		msg: 'Password Reset Successfully. Please Login with your new password',
+	});
+
 });
 
 
