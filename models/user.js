@@ -28,8 +28,8 @@ const userSchema = new Schema({
         default: 'user',
    
     },
-    resetPasswordToken: String,
-    resetPasswordExpire: Date,
+    resetPasswordToken: {type: String},
+    resetPasswordExpire: { type: Date },
     isEmailVerified: { type: Boolean, default: false },
     confirmationCode: { type: String },
 })
