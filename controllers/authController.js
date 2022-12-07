@@ -123,8 +123,6 @@ const forgotPassword = asynchandler( async(req,res) => {
 
 const resetPassword = asynchandler(async(req,res) => {
     //get hashed token
-    const { password } = req.body;
-
     const resetPasswordToken = crypto
 		.createHash('sha256')
 		.update(req.params.resettoken)
@@ -133,8 +131,8 @@ const resetPassword = asynchandler(async(req,res) => {
     
 
     const user = await User.findOne({
-		resetPasswordToken
-		// resetPasswordExpire: { $gt: Date.now() },
+		resetPasswordToken,
+		resetPasswordExpire: { $gt: Date.now() },
 	});
 
     if (!user) {
@@ -143,7 +141,10 @@ const resetPassword = asynchandler(async(req,res) => {
     }
 
     //set password
-    user.password = password;
+    // ?set new password
+	user.password = req.body.password;
+	user.resetPasswordToken = undefined;
+	user.resetPasswordExpire = undefined;
 
     await user.save();
 
