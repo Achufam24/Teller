@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get('/',requireAuth, getProfile );
 
-router.patch('/me/',requireAuth, upload.single("profilephoto"), updateProfile );
+router.patch('/',requireAuth, upload.single("profilephoto"), updateProfile );
 
 
 

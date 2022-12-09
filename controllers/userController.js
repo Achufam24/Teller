@@ -51,10 +51,10 @@ const updateProfile = asynchandler(async(req,res) => {
           user: updatedUser,
         });
       } 
-      else {
-        res.status(404);
-        throw new Error('User not found');
-      }        
+    //   else {
+    //     res.status(404);
+    //     throw new Error('User not found');
+    //   }        
     } catch (error) {
         res.status(400);
         throw new Error(error.message)
