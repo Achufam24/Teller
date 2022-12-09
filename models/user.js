@@ -21,7 +21,13 @@ const userSchema = new Schema({
     },
     password: {
         type:String,
-        required: true
+        required: true,
+    },
+    profilePictureUrl: {
+        type: String
+    },
+    cloudinary_id: {
+        type: String
     },
     role: {
         type: String,
@@ -42,8 +48,17 @@ userSchema.statics.signup = async function (name,email,password,confirmationCode
     if (!validator.isEmail(email)) {
         throw Error('Email is not valid');
     }
-    if (!validator.isStrongPassword(password)) {
-        throw Error('Password not strong enough')
+    // Check if password is empty
+    if (validator.isEmpty(password)) {
+        throw new Error('Password is required.');
+    }
+    // Check if password contains only letters and numbers
+    if (!validator.isAlphanumeric(password)) {
+       throw new Error('Password must contain only letters and numbers.');
+    }
+    // Check if password meets minimum and maximum length requirements
+    if (!validator.isLength(password, { min: 6, max: 30 })) {
+        throw new Error('Password must be between 8 and 30 characters long.');
     }
     const exists = await this.findOne({email})
 

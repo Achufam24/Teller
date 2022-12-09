@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const postRoutes = require('./routes/postRoutes');
+const userRoutes = require('./routes/userRoutes')
 const bodyParser = require('body-parser');
 
 
@@ -15,6 +16,9 @@ dotenv.config();
 
 app.use(cors());
 // app.use(bodyParser.urlencoded({extended: false}));
+// app.use(
+//     express.urlencoded({ extended: true })
+// );
 app.use(express.json());
 app.use((req,res,next) =>{
     console.log(req.path,req.method);
@@ -34,6 +38,7 @@ app.get('/', (req,res) => {
 
 app.use('/v1/auth', authRoutes);
 app.use('/v1/post', postRoutes);
+app.use('/v1/user', userRoutes);
 
 const PORT = process.env.PORT || 8000;
 
