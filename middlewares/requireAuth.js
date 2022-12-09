@@ -12,7 +12,7 @@ const requireAuth = async (req, res, next) => {
     const token = authorization.split(' ')[1]
   
     try {
-      const decoded = jwt.verify(token, 'Achufam24')
+      const decoded = jwt.verify(token, process.env.SECRET)
   
       req.user = await User.findById(decoded._id).select('-password');
       console.log(req.user)

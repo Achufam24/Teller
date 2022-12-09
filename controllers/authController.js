@@ -10,7 +10,7 @@ const asynchandler = require('express-async-handler');
 
 //create jwt Token
 const createToken = (_id) => {
-    return jwt.sign({_id}, 'Achufam24', { expiresIn: process.env.EXPIRE })
+    return jwt.sign({_id}, process.env.SECRET, { expiresIn: process.env.EXPIRE })
 }
 
 
