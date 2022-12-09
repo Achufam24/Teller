@@ -28,7 +28,7 @@ const requireAuth = async (req, res, next) => {
     if(req.user.role === 'user') {
         console.log(req.user._id);
         res.status(401)
-        .json({error: "denied access"})
+        .json({error: "denied access, Admin only!"})
     } else{
         next();
     }

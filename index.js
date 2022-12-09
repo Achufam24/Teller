@@ -7,7 +7,8 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const postRoutes = require('./routes/postRoutes');
-const userRoutes = require('./routes/userRoutes')
+const userRoutes = require('./routes/userRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 const bodyParser = require('body-parser');
 
 
@@ -39,6 +40,7 @@ app.get('/', (req,res) => {
 app.use('/v1/auth', authRoutes);
 app.use('/v1/post', postRoutes);
 app.use('/v1/user', userRoutes);
+app.use('/v1/admin', adminRoutes);
 
 const PORT = process.env.PORT || 8000;
 
@@ -50,8 +52,6 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
 }).catch((error) => {
     console.log(error);
 })
-// app.listen(PORT, () => {
-//     console.log(`Server running on`,PORT);
-// })
+
 
 
