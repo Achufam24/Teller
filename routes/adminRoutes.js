@@ -1,6 +1,6 @@
 const { application } = require('express');
 const express = require('express');
-const { createuser, updateToAdmin, deleteUser, getUsersExceptMe, getAllusers } = require('../controllers/adminController');
+const { createuser, updateToAdmin, deleteUser, getUsersExceptMe, getAllusers, getAllSubscribers, subscribeMessage } = require('../controllers/adminController');
 const { requireAuth, admin } = require('../middlewares/requireAuth');
 
 
@@ -18,7 +18,11 @@ router.delete('/delete-user/:id', deleteUser);
 
 router.get('/OtherUsers', getUsersExceptMe);
 
-router.get('/user', getAllusers)
+router.get('/user', getAllusers);
+
+router.get('/subscribers',getAllSubscribers);
+
+router.post('/subscribeMessage',subscribeMessage);
 
 
 

@@ -9,6 +9,7 @@ const authRoutes = require('./routes/authRoutes');
 const postRoutes = require('./routes/postRoutes');
 const userRoutes = require('./routes/userRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const subscribeRoutes = require('./routes/subscribeRoutes');
 const bodyParser = require('body-parser');
 
 
@@ -41,6 +42,7 @@ app.use('/v1/auth', authRoutes);
 app.use('/v1/post', postRoutes);
 app.use('/v1/user', userRoutes);
 app.use('/v1/admin', adminRoutes);
+app.use('/v1/sub', subscribeRoutes);
 
 const PORT = process.env.PORT || 8000;
 

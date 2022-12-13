@@ -13,6 +13,12 @@ const createToken = (_id) => {
     return jwt.sign({_id}, process.env.SECRET, { expiresIn: process.env.EXPIRE })
 }
 
+/**
+ * @desc Register a user
+ * @route POST
+ * @route /v1/auth/register
+ * @access Public
+ */
 
 const RegisterUser = async(req,res) => {
     const {name,email,password} = req.body
@@ -29,6 +35,12 @@ const RegisterUser = async(req,res) => {
     }
 };
 
+/**
+ * @desc Login user
+ * @route GET
+ * @route v1/user/login
+ * @access Public 
+ */
 
 const  LoginUser = async(req,res) => {
     const {email, password} = req.body
@@ -51,6 +63,13 @@ const  LoginUser = async(req,res) => {
         res.status(400).json({error:error.message})
     }
 };
+
+/**
+ * @desc Verify User account
+ * @route POST
+ * @route v1/auth/register
+ * @access Public 
+ */
 
 //verify user email
 const verifyAccount = async(req,res) => {
@@ -77,6 +96,12 @@ const verifyAccount = async(req,res) => {
     }
 }
 
+/**
+ * @desc Update a new password
+ * @route PUT
+ * @route v1/user/forgotpassword
+ * @access Public
+ */
 
 
 const forgotPassword = asynchandler( async(req,res) => {
@@ -120,6 +145,13 @@ const forgotPassword = asynchandler( async(req,res) => {
 		throw new Error('Email could not be sent');
     }
 });
+
+/**
+ * @desc Reset User password
+ * @route PUT
+ * @route /v1/user/resetpassword/:resettoken
+ * @access Public
+ */
 
 const resetPassword = asynchandler(async(req,res) => {
     //get hashed token

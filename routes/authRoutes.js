@@ -11,7 +11,8 @@ router.get("/confirm/:confirmationCode", verifyAccount);
 
 router.put("/resetpassword/:resettoken", resetPassword)
 
-router.post("/forgotpassword",forgotPassword)
+router.post("/forgotpassword",forgotPassword);
+
 
 
 module.exports = router;
