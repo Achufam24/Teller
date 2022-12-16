@@ -24,7 +24,8 @@ const userSchema = new Schema({
         required: true,
     },
     profilePictureUrl: {
-        type: String
+        type: String,
+        default: 'https://res.cloudinary.com/agbamajnr/image/upload/v1665314423/users/63317d866313520819962d7a.jpg'
     },
     cloudinary_id: {
         type: String
