@@ -50,8 +50,8 @@ const updateToAdmin = asynchandler(async(req,res) => {
 
     try {
          if (user) {
-        user.name = req.body.name || user.name
-        user.role = req.body.role;
+        // user.name = req.body.name || user.name
+        user.role = 'admin'
 
         var updatedUser = await user.save();
 
