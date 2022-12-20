@@ -6,7 +6,7 @@ const { requireAuth, admin } = require('../middlewares/requireAuth')
 
 
 router.get('/', getProduct);
-router.post('/', requireAuth, upload.single("productphoto"), createProduct )
+router.post('/', requireAuth, upload.single("productImage"), createProduct )
 
 
 
