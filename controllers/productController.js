@@ -1,7 +1,8 @@
 const Product = require('../models/product');
 const cloudinary = require('../utils/cloudinary');
 const asynchandler = require('express-async-handler');
-const { sendEmail } = require('../utils/sendEmail')
+const { sendEmail } = require('../utils/sendEmail');
+const mongoose = require('mongoose');
 
 
 
@@ -10,6 +11,21 @@ const getProduct = async(req,res) => {
 
     res.status(200).json(products)
 }
+
+const getSingleProduct = asynchandler(async(req,res) => {
+    const {id} = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json('Invalid Product Id')
+    }
+
+    const product = await Product.findById(id)
+
+    if (!product) {
+        res.status(404).json({error:'No such Product'})
+    }
+    res.status(200).json(product)
+})
 
 
 const createProduct = asynchandler(async(req,res) => {
@@ -51,5 +67,6 @@ const createProduct = asynchandler(async(req,res) => {
 
 module.exports = {
     getProduct,
-    createProduct
+    createProduct,
+    getSingleProduct
 }
