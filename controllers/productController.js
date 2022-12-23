@@ -12,6 +12,14 @@ const getProduct = async(req,res) => {
     res.status(200).json(products)
 }
 
+const getUserProduct = async(req,res) => {
+    const user_id = req.user._id
+
+    const products = await Product.find({ user_id }).sort({createdAt: -1});
+
+    res.status(200).json(products)
+}
+
 const getSingleProduct = asynchandler(async(req,res) => {
     const {id} = req.params;
 
@@ -39,7 +47,7 @@ const createProduct = asynchandler(async(req,res) => {
         description,
         category } = req.body;
     try {
-        
+        const user_id = req.user._id
         const product = await Product.create({
             title,
             price,
@@ -47,7 +55,8 @@ const createProduct = asynchandler(async(req,res) => {
             description,
             category,
             cloudinary_id: result.public_id,
-            author:req.user.name
+            author:req.user.name,
+            user_id: req.user._id
         })
         if (product) {
             const postProduct = await product.save({});
@@ -65,8 +74,31 @@ const createProduct = asynchandler(async(req,res) => {
 });
 
 
+    const deleteProduct = asynchandler(async(req,res) => {
+        const product = await Product.findById(req.params.id);
+
+        try {
+            if (req.user.name ===  product.author) {
+                await product.remove();
+                res.json({message: 'Product removed'})
+            }else{
+                res.status(404);
+                throw new Error('Product not found')
+            }
+        } catch (error) {
+            res.status(500);
+            throw new Error(error.message)
+        }
+    })
+
+
+
+
+
 module.exports = {
     getProduct,
+    getUserProduct,
     createProduct,
-    getSingleProduct
+    getSingleProduct,
+    deleteProduct
 }
