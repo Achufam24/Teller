@@ -29,7 +29,7 @@ const updateProfile = asynchandler(async(req,res) => {
             res.status(200).json({
                 sucess:true,
                 message: 'Profile Updated sucessfully',
-                user: updatedUser,
+                user:updatedUser,
             });
         }
 
