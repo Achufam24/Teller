@@ -36,7 +36,7 @@ const updateProfile = asynchandler(async(req,res) => {
         // if user exist and image is uploaded
     else if (user.name && user.profilePictureUrl) {
         const result = await cloudinary.cloudinary.uploader.upload(req.file.path)
-        user.name = req.body.name;
+        // user.name = req.body.name;
         user.profilePictureUrl = result.secure_url;
         user.cloudinary_id = result.public_id
 
@@ -47,7 +47,7 @@ const updateProfile = asynchandler(async(req,res) => {
         res.status(200).json({
           success: true,
           message: 'Profile Updated Successfully',
-          user: updatedUser,
+          user:updatedUser,
         });
       } 
     //   else {
