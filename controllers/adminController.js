@@ -194,7 +194,7 @@ const subscribeMessage = asynchandler(async(req,res) => {
 				const text = `<div>
 					${message.message}
 					<footer>
-					<a href='http://localhost:8000/v1/sub/unsubscribe/${user.email}'> Unsubscribe </a>
+					<a href='https://teller-u11u.onrender.com/v1/sub/unsubscribe/${user.email}'> Unsubscribe </a>
 					</footer>
 					</div>`;
 
