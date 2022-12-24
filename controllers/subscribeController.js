@@ -91,7 +91,28 @@ const subscribe = asynchandler(async (req, res) => {
     }
   })
 
+
+  const unSubscribeEmail = asynchandler(async(req, res) => {
+    try {
+      if (typeof req.params.email !== 'undefined') {
+        let findEmail = await Subscribe.find({ email: req.params.email });
+
+        if (findEmail.length > 0) {
+          await Subscribe.deleteOne({ email: req.params.email });
+          res.status(200).send('Unsubscribe Successfully');
+        }
+        else{
+          res.status(404).send('User not found');
+        }
+      }
+    } catch (error) {
+      res.status(400);
+      throw new Error(error.message);
+    }
+  })
+
 module.exports = {
     subscribe,
-    unsubscribe
+    unsubscribe,
+    unSubscribeEmail
 }

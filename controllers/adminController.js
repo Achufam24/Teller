@@ -194,7 +194,7 @@ const subscribeMessage = asynchandler(async(req,res) => {
 				const text = `<div>
 					${message.message}
 					<footer>
-					<a href='https://api.kitchendiary.hng.tech/api/v1/user/unSubscribe/${user.email}'> Unsubscribe </a>
+					<a href='http://localhost:8000/v1/sub/unsubscribe/${user.email}'> Unsubscribe </a>
 					</footer>
 					</div>`;
 
