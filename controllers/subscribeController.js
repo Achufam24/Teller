@@ -99,7 +99,7 @@ const subscribe = asynchandler(async (req, res) => {
 
         if (findEmail.length > 0) {
           await Subscribe.deleteOne({ email: req.params.email });
-          res.status(200).send('Unsubscribe Successfully');
+          res.status(200).send(__dirname + '/templates/index.html')
         }
         else{
           res.status(404).send('User not found');
