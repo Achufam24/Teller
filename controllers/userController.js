@@ -8,7 +8,7 @@ const getProfile = asynchandler(async(req,res) => {
 
     if (user) {
        return res.status(200).json({
-        user,
+        user:user,
        });
     }
 });
